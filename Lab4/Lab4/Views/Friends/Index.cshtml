@@ -36,9 +36,15 @@
                     @Html.DisplayFor(modelItem => item.MestoZiveenje)
                 </td>
                 <td>
-                    <button class="btn btn-default">@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "text-primary" })</button>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                    {
+                        <button class="btn btn-default">@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "text-primary" })</button>
+                    }
                     <button class="btn btn-default">@Html.ActionLink("Details", "Details", new { id = item.Id })</button>
-                    <button data-friends-id="@item.Id" class="btn btn-default js-delete">Delete</button>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                    {
+                        <button data-friends-id="@item.Id" class="btn btn-default js-delete">Delete</button>
+                    }
                 </td>
             </tr>
         }

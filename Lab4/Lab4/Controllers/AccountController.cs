@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -140,6 +141,28 @@ namespace Lab4.Controllers
         public ActionResult Register()
         {
             return View();
+        }
+
+
+        public ActionResult AddUserToRole()
+        {
+            AddToRoleModel model = new AddToRoleModel();
+            model.Roles = new List<string>() { "Administrator", "Manager", "User" };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AddUserToRole(AddToRoleModel model)
+        {
+            var email = model.Email;
+            var user = UserManager.FindByEmail(email);
+            if (user == null)
+            {
+                throw new HttpException(404, "There is no user with email: " + email);
+            }
+
+            UserManager.AddToRole(user.Id, model.SelectedRole);
+            return RedirectToAction("Index", "Friends");
         }
 
         //

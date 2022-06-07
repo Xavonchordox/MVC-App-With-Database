@@ -10,6 +10,7 @@ using Lab4.Models;
 
 namespace Lab4.Controllers
 {
+    [Authorize]
     public class FriendsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -58,6 +59,7 @@ namespace Lab4.Controllers
             return View(friend);
         }
 
+        [Authorize(Roles = "Administrator, Manager")]
         // GET: Friends/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -88,7 +90,8 @@ namespace Lab4.Controllers
             }
             return View(friend);
         }
-        
+
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int id)
         {
             Friend friend = db.friends.Find(id);
@@ -96,7 +99,7 @@ namespace Lab4.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
